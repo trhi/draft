@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Infinite scroll (Taper #11)</title>
+
+<!-- “Infinite scroll” Copyright (C) 2023 Terhi Marttila
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved. This file is offered as-is,
+without any warranty.
+
+This is from Taper #11: Parallels, Fall 2023:
+
+https://taper.badquar.to/11/infinite_scroll.html
+
+What would fingers do if they no longer had anything to scroll?
+
+The poem highlights the parallel, yet often forgotten, relationship between the
+infinite scroll interface and MONEY, drawing attention to the unpaid labor
+that the billions of fingers of the human species have been enlisted to engage
+in since the 2010s. Poor fingers: often the thumb, sometimes the index finger
+and sometimes the index and middle fingers together, laboring day and night with
+no compensation for the millions of kilometers of swipes and scrolls which
+they engage in during their waking hours.
+
+The poem calls attention to the mental processes that accompany scrolling:
+boredom, tired mind, the desire to find something, anything, that sparks
+something within, something that intrigues or inspires. After all, our fingers
+and our hands are an excellent tool to reach for when boredom overwhelms
+the mind. They say that our hands are what distinguishes us from our closest
+relative, the ape.
+
+The more you scroll, the more text is generated onto the page. Perhaps the truly
+radical way to evolve ourselves beyond this current era of mental digital
+overload would be to decouple ourselves entirely from platforms that thrive on
+an ethos of infinitely scrollable content whose user-generated content is
+created because users desire likes, desire followers, desire attention and
+desire content to kill time and to soothe bored minds that do not know what to
+do with the time on their hands, and that no longer know what to do with the
+hands themselves.
+
+The longer you scroll, the darker the screen becomes, eventually making the
+reading impossible. We find ourselves no longer motivated to scroll. Finally,
+think the fingers! A rest! Silly human, finally they stopped using us for
+scrolling. I wonder what they will have us do instead of scrolling?
+
+Some ideas and suggestions for beginners on what to do with hands: crafts,
+crochet, knitting, quilting, drawing, painting, sculpting, fishing, fixing things,
+whittling, sewing, playing guitar, playing piano, playing bass, playing violin,
+playing a tuba, writing with a pencil, cooking, baking, tending to plants,
+petting a cat, coding, typing, writing and so on and so forth.
+It is really only a question of imagination!
+
+-->
+
+	<style>
+		body { margin:0 ; overflow:hidden }
+		a { color:#eee ; text-decoration:none }
+		header { margin:0 ; padding:0 ; background-color:#444 ; color:#bbb ;
+			position:relative ; z-index:1000 }
+		header > h1 { margin:0 ; font-size:12px ; font-family:sans-serif ;
+			border-bottom:1px #999 solid ; padding:5px 10px ; line-height:17px }
+	</style>
+
+</head>
+<body>
+	<header id=nav>
+		<h1>
+			<a href="index.html">Taper #11 :
+			Parallels</a> : Fall 2023 <br>
+			<a href="infinite_scroll.html">"Infinite scroll"</a> by
+			<a href="about.html#marttila">Terhi Marttila</a> :
+			<a href="prev.html">&lt;&lt;</a> &mdash;
+			<a href="next.html">&gt;&gt;</a>
+		</h1>
+	</header>  <!-- All poem code goes here, and must be less than or equal to 2048 bytes (not including closing </body> and </html> tags below)-->
+  <div id="a" style="height:100%;width:100%;top:0;left:0;position:absolute;overflow-y:scroll;">
+    <p id="scro11">⇓</p><p>⇓</p><p>⇓</p>
+  </div>
+<script>
+document.head.insertAdjacentHTML("beforeend",'<style>body{font-family:Arial;}p{margin:0;font-size:24vw;color:black;text-align:center;}@media screen and (max-width:992px){p{margin-bottom:350px;}}</style>');
+let s=document.querySelector("#a");s.addEventListener("scroll",(e)=>addIdea());let i,ic=0,bc=0;scro11=document.querySelector("#scro11");
+
+i='bling.bling.caching.infinite.scroll.the longer.you scroll.the more money.I make.ha ha.ha ha.ha.the more money.I make.the more.of your time.I take.ha ha.bling.bling.what are you.looking for.scrolling.looking.searching.caching.human.fingers.working.hard.to kill time.to make.money.for.someone else.ha ha.bling.bling.making.time.pass.tik.tok.tik.tok.time.passes.thumb.tires.caching.bling.bling.money.changes.hands.human.hands.my hands.scrolling.a tired.mind.bling.bling.scrolling.for thoughts.for stuff.and boredom.turned into.money.turned into.time.lost.tik.tok.turned into.money.for someone else.turned into.time.turned into.boredom.turned into.money.ha ha.ha ha.ha.caching.human boredom.turned into.inventions.turned into.art.turned into.poetry.turned into.money.for them.but not.for me.caching.bling.bling.infinite scroll.'.split('.');
+function addIdea(){
+	let i2=document.createTextNode(i[ic]);
+	let p=document.createElement('p');
+	p.appendChild(i2);
+	document.querySelector('#a').appendChild(p);
+	s.appendChild(scro11.cloneNode(true));
+	ic++;if(ic==i.length){ic=0;}bc+=0.0003;document.body.style.backgroundColor=`rgba(0,0,0,${bc})`;
+}
+</script>
+</body>
+</html>
