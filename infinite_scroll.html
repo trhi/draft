@@ -53,6 +53,10 @@ playing a tuba, writing with a pencil, cooking, baking, tending to plants,
 petting a cat, coding, typing, writing and so on and so forth.
 It is really only a question of imagination!
 
+This work is part of Terhi's postdoctoral artistic research at IST/ID.
+This research was funded by the Portuguese Recovery and Resilience Program
+(PRR), IAPMEI/ANI/FCT under Agenda C645022399-00000057 (eGamesLab).
+
 -->
 
 	<style>
@@ -77,11 +81,13 @@ It is really only a question of imagination!
 		</h1>
 	</header>  <!-- All poem code goes here, and must be less than or equal to 2048 bytes (not including closing </body> and </html> tags below)-->
   <div id="a" style="height:100%;width:100%;top:0;left:0;position:absolute;overflow-y:scroll;overflow-x:hidden;">
-    <p id="scro11">⇓</p><p>⇓</p><p>⇓</p>
+		<p id="scro11" class="scro11"><span class="scro11a">1</span><span class="scro11b" >1</span></p>
   </div>
 <script>
-document.head.insertAdjacentHTML("beforeend",'<style>body{font-family:Arial;}p{margin:0;font-size:24vw;color:black;text-align:center;}@media screen and (max-width:992px){p{margin-bottom:350px;}}</style>');
+document.head.insertAdjacentHTML("beforeend",'<style>body{font-family:Arial,sans-serif;}.scro11{font-size:60vw;}.scro11a{display: inline-block; transform:scale(1,-1) translate(50px);}.scro11b{display: inline-block; transform:rotate(180deg) translate(50px);}p{margin:0;font-size:24vw;color:black;text-align:center;}@media screen and (max-width:992px){p{margin-bottom:350px;}}</style>');
 let s=document.querySelector("#a");s.addEventListener("scroll",(e)=>addIdea());let i,ic=0,bc=0;scro11=document.querySelector("#scro11");
+s.appendChild(scro11.cloneNode(true));
+s.appendChild(scro11.cloneNode(true));
 
 i='bling.bling.caching.infinite.scroll.the longer.you scroll.the more money.I make.ha ha.ha ha.ha.the more money.I make.the more.of your time.I take.bling.bling.caching.what are you.looking for.scrolling.looking.searching.human.fingers.working hard.to kill time.to make.money.for someone else.ha ha.bling.bling.caching.making.time.pass.tik.tok.tik.tok.time.passes.thumb.tires.bling.bling.caching.money.changes hands.human.hands.my hands.scrolling.a tired.mind.bling.bling.caching.scrolling.for thoughts.for stuff.and boredom.turned into.money.turned into.time.lost.for me.but not for them.tik.tok.tik.tok.time.turned into.money.for someone else.turned into.time.turned into.boredom.turned into.money.ha ha.ha ha.ha.caching.human boredom.turned into.inventions.turned into.art.turned into.poetry.turned into.money.for them.but not.for me.bling.bling.caching.infinite scroll.'.split('.');
 function addIdea(){
