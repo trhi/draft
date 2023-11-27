@@ -130,16 +130,10 @@ This research was funded by the Portuguese Recovery and Resilience Program тее т
 		</h1>
 	</header>  <!-- All poem code goes here, and must be less than or equal to 2048 bytes (not including closing </body> and </html> tags below)-->
 <div id="a" style="height:100%;width:100%;top:0;left:0;position:absolute;overflow-y:scroll;overflow-x:hidden;"><p id="scro11" class="scro11"><span class="scro11a">1</span><span class="scro11b">1</span></p></div>
-<script>
-document.head.insertAdjacentHTML("beforeend",'<style>body{font-family:Arial,sans-serif;}.scro11{font-size:70vw;}.scro11a{display:inline-block;transform:scale(1,-1)translate(50px);}.scro11b{display:inline-block;transform:rotate(180deg)translate(50px);}p{margin:0;font-size:22vw;color:black;text-align:center;}</style>');
-let x=127000, s=document.querySelector("#a"), scro11=document.querySelector("#scro11"), b='bling.bling.ca-ching', is='infinite.scroll', ti="turned into",i,ic=0;
-s.appendChild(scro11.cloneNode(true));s.appendChild(scro11.cloneNode(true));
-
-i=`${b}.${is}.the longer.you scroll.the more money.they make.ha ha.ha ha.ha.look.a cute.cat.${b}.seconds.spent.seconds.counted.money.counted.money.spent.${b}.money.changes.hands.invisible.money.the invisible.labor.of unpaid.fingers.generating.invisible.revenue.ad.revenue.ad.infinitum.ha ha.ha ha.ha.${b}.fingers.choose.mind.follows.tik.tok.tik.tok.time.passes.thumb.tires.fingers.ache.clicks.generate.revenue.ad.revenue.ad.infinitum.ha ha.ha ha.ha.${b}.human boredom.infinite.boredom.${is}.an infinite.resource.${ti}.money.for someone else.${ti}.time.lost.for me.${b}.human fingers.working hard.to kill time.to kill.boredom.to make.money.for someone else.${b}.invisible labor.invisible money.changes.invisible hands.${b}`.split('.');
-
-function a(){let p=document.createElement('p'); p.appendChild(document.createTextNode(i[ic])); s.appendChild(p); s.appendChild(scro11.cloneNode(true)); ic++; if(ic==i.length){ic=0}; document.body.style.backgroundColor=`rgba(0,0,0,${bc()})`;}
-let bc=()=>{x=(window.innerWidth/985)*127000;if(s.scrollTop<x){return(s.scrollTop/x)}else{return 1}};
-s.addEventListener('scroll',a);
-</script>
+<script>document.head.insertAdjacentHTML("beforeend",'<style>body{font-family:Arial,sans-serif;}.scro11{font-size:70vw;}.scro11a{display:inline-block;transform:scale(1,-1)translate(50px);}.scro11b{display:inline-block;transform:rotate(180deg)translate(50px);}p{margin:0;font-size:22vw;color:black;text-align:center;}</style>');
+let g,s=document.querySelector("#a"),b='bling.bling.ca-ching',is='infinite.scroll',ti="turned into",i,ic=0,r=0;scro11=document.querySelector("#scro11");s.appendChild(scro11.cloneNode(true));s.appendChild(scro11.cloneNode(true));i=`${b}.${is}.the longer.you scroll.the more money.they make.ha ha.ha ha.ha.look.a cute.cat.${b}.seconds.spent.seconds.counted.money.counted.money.spent.${b}.money.changes.hands.invisible.money.the invisible.labor.of unpaid.fingers.generating.invisible.revenue.ad.revenue.ad.infinitum.ha ha.ha ha.ha.${b}.fingers.choose.mind.follows.tik.tok.tik.tok.time.passes.thumb.tires.fingers.ache.clicks.generate.revenue.ad.revenue.ad.infinitum.ha ha.ha ha.ha.${b}.human boredom.infinite.boredom.${is}.an infinite.resource.${ti}.money.for someone else.${ti}.time.lost.for me.${b}.human fingers.working hard.to kill time.to kill.boredom.to make.money.for someone else.${b}.invisible labor.invisible money.changes.invisible hands.${b}`.split('.');
+let bc=()=>{if(r==0){return ((ic-30)/i.length)*0.98; }else{return (((i.length-30)+ic)/i.length)*0.98;}};
+function a(){let p=document.createElement('p');p.appendChild(document.createTextNode(i[ic]));s.appendChild(p);s.appendChild(scro11.cloneNode(true));ic++;if(ic==i.length){ic=0,r++;};document.body.style.backgroundColor=`rgba(0,0,0,${bc()})`;}
+const th=(fn,d)=>{let t=Date.now();return()=>{if((t+d-Date.now())<= 0){fn();t=Date.now();}}};s.addEventListener('scroll',th(a,600));</script>
 </body>
 </html>
