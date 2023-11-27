@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Infinite scroll (Taper #11)</title>
+
+<!-- “Infinite scroll” Copyright (C) 2023 Terhi Marttila
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved. This file is offered as-is,
+without any warranty.
+
+This is from Taper #11: Parallels, Fall 2023:
+
+https://taper.badquar.to/11/infinite_scroll.html
+
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ " The fingers of the world ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ have been recrtuited  ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ for unpaid labor ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ on a massive scale. " ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ " I wonder ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ what these fingers  ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ would do  ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ if their harsh ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ unergonomic  ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ working conditions  ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ (with endless  ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ hours⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ around the clock)⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ allowed for more time ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ more time ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ more time ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ more time ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ off work? " ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ infinite scroll  ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ underscores ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ the parallels  ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ between the visible movement ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ of fingers on screens ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ and the invisible⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ global movements ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ of money  ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ that the labor ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ of fingers⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ puts into motion. ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+The "ha ha, ha ha, ha" is an intertextual reference to Business as Usual by ⥥ ⥥
+Matti Kangaskoski. https://nokturno.fi/poem/business-as-usual-elokirja/ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+This work is part of Terhi Marttila's postdoctoral artistic research at IST/ID.
+This research was funded by the Portuguese Recovery and Resilience Program ⥥ ⥥
+(PRR), IAPMEI/ANI/FCT under Agenda C645022399-00000057 (eGamesLab). ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ And  ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ they say that our hands ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ are what distinguishes us ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ from our closest relative, the ape.  ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ And they say that the hand ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ thinks faster than the mind. ⥥ ⥥ ⥥ ⥥  ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ And they say ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ that we may ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ have too much time  ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ on our hands.  ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥ ⥥
+
+-->
+
+	<style>
+		body { margin:0 ; overflow:hidden }
+		a { color:#eee ; text-decoration:none }
+		header { margin:0 ; padding:0 ; background-color:#444 ; color:#bbb ;
+			position:relative ; z-index:1000 }
+		header > h1 { margin:0 ; font-size:12px ; font-family:sans-serif ;
+			border-bottom:1px #999 solid ; padding:5px 10px ; line-height:17px }
+	</style>
+
+</head>
+<body>
+	<header id=nav>
+		<h1>
+			<a href="index.html">Taper #11 :
+			Parallels</a> : Fall 2023 <br>
+			<a href="infinite_scroll.html">"Infinite scroll"</a> by
+			<a href="about.html#marttila">Terhi Marttila</a> :
+			<a href="prev.html">&lt;&lt;</a> &mdash;
+			<a href="next.html">&gt;&gt;</a>
+		</h1>
+	</header>  <!-- All poem code goes here, and must be less than or equal to 2048 bytes (not including closing </body> and </html> tags below)-->
+<div id="a" style="height:100%;width:100%;top:0;left:0;position:absolute;overflow-y:scroll;overflow-x:hidden;"><p id="scro11" class="scro11"><span class="scro11a">1</span><span class="scro11b">1</span></p></div>
+<script>document.head.insertAdjacentHTML("beforeend",'<style>body{font-family:Arial,sans-serif;}.scro11{font-size:70vw;}.scro11a{display:inline-block;transform:scale(1,-1)translate(50px);}.scro11b{display:inline-block;transform:rotate(180deg)translate(50px);}p{margin:0;font-size:22vw;color:black;text-align:center;}</style>');
+let black=127000, g,s=document.querySelector("#a"),b='bling.bling.ca-ching',is='infinite.scroll',ti="turned into",i,ic=0,r=0;scro11=document.querySelector("#scro11");s.appendChild(scro11.cloneNode(true));s.appendChild(scro11.cloneNode(true));i=`${b}.${is}.the longer.you scroll.the more money.they make.ha ha.ha ha.ha.look.a cute.cat.${b}.seconds.spent.seconds.counted.money.counted.money.spent.${b}.money.changes.hands.invisible.money.the invisible.labor.of unpaid.fingers.generating.invisible.revenue.ad.revenue.ad.infinitum.ha ha.ha ha.ha.${b}.fingers.choose.mind.follows.tik.tok.tik.tok.time.passes.thumb.tires.fingers.ache.clicks.generate.revenue.ad.revenue.ad.infinitum.ha ha.ha ha.ha.${b}.human boredom.infinite.boredom.${is}.an infinite.resource.${ti}.money.for someone else.${ti}.time.lost.for me.${b}.human fingers.working hard.to kill time.to kill.boredom.to make.money.for someone else.${b}.invisible labor.invisible money.changes.invisible hands.${b}`.split('.');
+
+
+//function a(){let p=document.createElement('p');p.appendChild(document.createTextNode(i[ic]));s.appendChild(p);s.appendChild(scro11.cloneNode(true));ic++;if(ic==i.length){ic=0,r++;};document.body.style.backgroundColor=`rgba(0,0,0,${bc()})`;}
+
+function a(){let p=document.createElement('p');p.appendChild(document.createTextNode(i[ic]));s.appendChild(p);s.appendChild(scro11.cloneNode(true));ic++;if(ic==i.length){ic=0,r++;};document.body.style.backgroundColor=`rgba(0,0,0,${bc()})`;}
+
+//let bc=()=>{if(r==0){return ((ic-30)/i.length)*0.98; }else{return (((i.length-30)+ic)/i.length)*0.98;}};
+
+let bc=()=>{ black = (window.innerWidth/985)*127000; if (s.scrollTop < black) { return (s.scrollTop/black) } else { return 1 } };
+
+const th=(fn,d)=>{let t=Date.now();return()=>{if((t+d-Date.now())<= 0){fn();t=Date.now();}}};
+
+s.addEventListener('scroll',a);
+
+</script>
+</body>
+</html>
